@@ -1,0 +1,363 @@
+/* 控制台面板 */
+.console-panel {
+    display: flex;
+    flex-direction: column;
+    height: var(--console-height);
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    transition: height var(--transition-base);
+}
+
+.console-panel.collapsed {
+    height: 40px;
+}
+
+/* 控制台头部 */
+.console-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.console-header:hover {
+    background: var(--bg-tertiary);
+}
+
+.console-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.console-title .icon {
+    font-size: var(--font-size-lg);
+}
+
+.console-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+/* 控制台内容 */
+.console-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+}
+
+.console-panel.collapsed .console-content {
+    display: none;
+}
+
+/* 控制台日志 */
+.console-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.console-log {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.console-log:hover {
+    background: var(--bg-secondary);
+}
+
+/* 日志图标 */
+.log-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+}
+
+/* 日志内容 */
+.log-content {
+    flex: 1;
+    color: var(--text-primary);
+}
+
+/* 日志时间 */
+.log-time {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* 不同类型的日志 */
+.console-log.log {
+    border-left: 3px solid var(--info-color);
+}
+
+.console-log.log .log-icon::before {
+    content: "ℹ️";
+}
+
+.console-log.warn {
+    border-left: 3px solid var(--warning-color);
+    background: rgba(255, 193, 7, 0.05);
+}
+
+.console-log.warn .log-icon::before {
+    content: "⚠️";
+}
+
+.console-log.warn .log-content {
+    color: var(--warning-color);
+}
+
+.console-log.error {
+    border-left: 3px solid var(--danger-color);
+    background: rgba(220, 53, 69, 0.05);
+}
+
+.console-log.error .log-icon::before {
+    content: "❌";
+}
+
+.console-log.error .log-content {
+    color: var(--danger-color);
+}
+
+.console-log.success {
+    border-left: 3px solid var(--success-color);
+}
+
+.console-log.success .log-icon::before {
+    content: "✅";
+}
+
+.console-log.success .log-content {
+    color: var(--success-color);
+}
+
+/* 对象/数组展开 */
+.log-object {
+    margin-top: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    border-left: 2px solid var(--border-color);
+}
+
+.log-object-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.log-object-header:hover {
+    color: var(--primary-color);
+}
+
+.log-object-toggle {
+    flex-shrink: 0;
+}
+
+.log-object-toggle::before {
+    content: "▶";
+    display: inline-block;
+    transition: transform var(--transition-fast);
+}
+
+.log-object.expanded .log-object-toggle::before {
+    transform: rotate(90deg);
+}
+
+.log-object-body {
+    display: none;
+    margin-top: var(--spacing-xs);
+    padding-left: var(--spacing-md);
+}
+
+.log-object.expanded .log-object-body {
+    display: block;
+}
+
+.log-object-prop {
+    display: flex;
+    gap: var(--spacing-xs);
+    padding: 2px 0;
+}
+
+.log-object-key {
+    color: var(--primary-color);
+}
+
+.log-object-value {
+    color: var(--text-primary);
+}
+
+/* 空控制台状态 */
+.console-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.console-empty .icon {
+    font-size: 32px;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.5;
+}
+
+.console-empty p {
+    font-size: var(--font-size-sm);
+}
+
+/* 控制台过滤 */
+.console-filter {
+    display: flex;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-btn {
+    padding: 2px var(--spacing-sm);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 控制台搜索 */
+.console-search {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.console-search input {
+    flex: 1;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.console-search input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 控制台统计 */
+.console-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-left: auto;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.stat-item .count {
+    font-weight: 600;
+}
+
+.stat-item.errors .count {
+    color: var(--danger-color);
+}
+
+.stat-item.warnings .count {
+    color: var(--warning-color);
+}
+
+/* 控制台代码高亮 */
+.log-code {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family-mono);
+    overflow-x: auto;
+}
+
+.log-code code {
+    color: var(--text-primary);
+}
+
+/* 控制台链接 */
+.log-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.log-link:hover {
+    text-decoration: underline;
+}
+
+/* 控制台表格 */
+.log-table {
+    margin-top: var(--spacing-xs);
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.log-table th,
+.log-table td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.log-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="在线HTML代码运行平台 - 实时编写和预览HTML、CSS、JavaScript代码">
+    <meta name="keywords" content="HTML, CSS, JavaScript, 在线编辑器, 代码运行">
+    <title>在线HTML代码运行平台</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+    
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/eclipse.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/preview.css">
+    <link rel="stylesheet" href="css/console.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- 头部工具栏 -->
+    <header class="toolbar">
+        <div class="toolbar-left">
+            <h1 class="logo">
+                <span class="logo-icon">💻</span>
+                <span class="logo-text">HTML在线运行</span>
+            </h1>
+        </div>
+        
+        <div class="toolbar-center">
+            <button class="btn btn-primary" id="runBtn" title="运行代码 (Ctrl/Cmd + Enter)">
+                <span class="icon">▶️</span>
+                <span class="text">运行</span>
+            </button>
+            <button class="btn" id="saveBtn" title="保存代码 (Ctrl/Cmd + S)">
+                <span class="icon">💾</span>
+                <span class="text">保存</span>
+            </button>
+            <button class="btn" id="clearBtn" title="清空代码">
+                <span class="icon">🗑️</span>
+                <span class="text">清空</span>
+            </button>
+        </div>
+        
+        <div class="toolbar-right">
+            <button class="btn" id="templateBtn" title="模板">
+                <span class="icon">📋</span>
+                <span class="text">模板</span>
+            </button>
+            <button class="btn" id="shareBtn" title="分享">
+                <span class="icon">🔗</span>
+                <span class="text">分享</span>
+            </button>
+            <button class="btn" id="downloadBtn" title="下载">
+                <span class="icon">⬇️</span>
+                <span class="text">下载</span>
+            </button>
+            <button class="btn" id="themeBtn" title="切换主题">
+                <span class="icon">🌓</span>
+            </button>
+            <button class="btn" id="settingsBtn" title="设置">
+                <span class="icon">⚙️</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-container">
+        <!-- 编辑器区域 -->
+        <section class="editor-section">
+            <div class="editor-tabs">
+                <button class="tab-btn active" data-lang="html">
+                    <span class="tab-icon">📄</span>
+                    <span class="tab-text">HTML</span>
+                </button>
+                <button class="tab-btn" data-lang="css">
+                    <span class="tab-icon">🎨</span>
+                    <span class="tab-text">CSS</span>
+                </button>
+                <button class="tab-btn" data-lang="js">
+                    <span class="tab-icon">⚡</span>
+                    <span class="tab-text">JavaScript</span>
+                </button>
+            </div>
+            
+            <div class="editor-content">
+                <div class="editor-pane active" id="html-pane"></div>
+                <div class="editor-pane" id="css-pane"></div>
+                <div class="editor-pane" id="js-pane"></div>
+            </div>
+        </section>
+
+        <!-- 分隔条 -->
+        <div class="resizer" id="resizer"></div>
+
+        <!-- 预览区域 -->
+        <section class="preview-section">
+            <div class="preview-header">
+                <span class="preview-title">
+                    <span class="icon">👁️</span>
+                    <span>预览</span>
+                </span>
+                <div class="preview-actions">
+                    <button class="btn-icon" id="refreshBtn" title="刷新">🔄</button>
+                    <button class="btn-icon" id="fullscreenBtn" title="全屏">⛶</button>
+                </div>
+            </div>
+            <div class="preview-container">
+                <iframe 
+                    id="preview-iframe" 
+                    sandbox="allow-scripts allow-modals allow-forms allow-pointer-lock allow-popups allow-same-origin"
+                    frameborder="0"
+                ></iframe>
+                <div class="preview-loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">加载中...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 控制台 -->
+    <aside class="console-panel" id="consolePanel">
+        <div class="console-header">
+            <span class="console-title">
+                <span class="icon">🖥️</span>
+                <span>控制台</span>
+            </span>
+            <div class="console-actions">
+                <button class="btn-icon" id="clearConsoleBtn" title="清空">🗑️</button>
+                <button class="btn-icon" id="toggleConsoleBtn" title="收起">▼</button>
+            </div>
+        </div>
+        <div class="console-content">
+            <div class="console-logs" id="consoleLogs"></div>
+        </div>
+    </aside>
+
+    <!-- 模态框容器 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <!-- 模板选择模态框 -->
+        <div class="modal" id="templateModal">
+            <div class="modal-header">
+                <h2>选择模板</h2>
+                <button class="modal-close" data-modal="templateModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="template-grid" id="templateGrid"></div>
+            </div>
+        </div>
+
+        <!-- 分享模态框 -->
+        <div class="modal" id="shareModal">
+            <div class="modal-header">
+                <h2>分享代码</h2>
+                <button class="modal-close" data-modal="shareModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="share-content">
+                    <label for="shareUrl">分享链接：</label>
+                    <div class="input-group">
+                        <input type="text" id="shareUrl" readonly placeholder="分享链接将在此显示" aria-label="分享链接">
+                        <button class="btn btn-primary" id="copyLinkBtn">复制链接</button>
+                    </div>
+                    <div class="share-info">
+                        <p>💡 提示：将链接分享给他人，他们可以直接查看你的代码</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设置模态框 -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-header">
+                <h2>设置</h2>
+                <button class="modal-close" data-modal="settingsModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <label for="editorThemeSelect">编辑器主题</label>
+                        <select id="editorThemeSelect" aria-label="选择编辑器主题">
+                            <option value="eclipse">亮色主题</option>
+                            <option value="monokai">暗色主题</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="fontSizeRange">字体大小</label>
+                        <input type="range" id="fontSizeRange" min="12" max="24" value="14" aria-label="调整字体大小">
+                        <span id="fontSizeValue">14px</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="autoSaveCheck" checked>
+                            自动保存
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="autoRunCheck" checked>
+                            自动运行
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知容器 -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closetag.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.min.js"></script>
+    
+    <!-- LZ-String for compression -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/config.js"></script>
+    <script src="js/utils/debounce.js"></script>
+    <script src="js/utils/dom.js"></script>
+    <script src="js/constants/templates.js"></script>
+    <script src="js/modules/Editor.js"></script>
+    <script src="js/modules/Preview.js"></script>
+    <script src="js/modules/Storage.js"></script>
+    <script src="js/modules/Share.js"></script>
+    <script src="js/modules/Templates.js"></script>
+    <script src="js/modules/Console.js"></script>
+    <script src="js/modules/ThemeManager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

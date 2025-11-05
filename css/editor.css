@@ -1,0 +1,266 @@
+/* 编辑器标签页 */
+.editor-tabs {
+    display: flex;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 var(--spacing-sm);
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-icon {
+    font-size: var(--font-size-lg);
+}
+
+.tab-text {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .tab-text {
+        display: inline;
+    }
+}
+
+/* 编辑器内容区域 */
+.editor-content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.editor-pane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    overflow: auto;
+}
+
+.editor-pane.active {
+    display: block;
+}
+
+/* CodeMirror 自定义样式 */
+.CodeMirror {
+    height: 100% !important;
+    font-family: var(--font-family-mono);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.CodeMirror-gutters {
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+}
+
+.CodeMirror-linenumber {
+    color: var(--text-muted);
+    padding: 0 8px;
+}
+
+.CodeMirror-cursor {
+    border-left: 2px solid var(--primary-color);
+}
+
+.CodeMirror-selected {
+    background: rgba(0, 123, 255, 0.1);
+}
+
+.CodeMirror-line {
+    padding: 0 4px;
+}
+
+/* 暗色主题下的CodeMirror */
+body.dark-theme .CodeMirror {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+body.dark-theme .CodeMirror-gutters {
+    background: var(--bg-secondary);
+    border-right-color: var(--border-color);
+}
+
+/* CodeMirror 匹配括号高亮 */
+.CodeMirror-matchingbracket {
+    color: var(--success-color) !important;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.CodeMirror-nonmatchingbracket {
+    color: var(--danger-color) !important;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* 编辑器聚焦状态 */
+.CodeMirror-focused .CodeMirror-selected {
+    background: rgba(0, 123, 255, 0.15);
+}
+
+/* 搜索高亮 */
+.CodeMirror-search-match {
+    background: rgba(255, 193, 7, 0.3);
+    border: 1px solid var(--warning-color);
+}
+
+/* 行高亮 */
+.CodeMirror-activeline-background {
+    background: rgba(0, 123, 255, 0.05);
+}
+
+/* 编辑器工具栏（如果需要） */
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.editor-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-left: auto;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.editor-info span {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+/* 代码折叠 */
+.CodeMirror-foldmarker {
+    color: var(--primary-color);
+    text-shadow: none;
+    cursor: pointer;
+}
+
+.CodeMirror-foldgutter {
+    width: 12px;
+}
+
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.CodeMirror-foldgutter-open:hover,
+.CodeMirror-foldgutter-folded:hover {
+    color: var(--text-primary);
+}
+
+/* 滚动条优化 */
+.CodeMirror-vscrollbar,
+.CodeMirror-hscrollbar {
+    outline: none;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar,
+.CodeMirror-hscrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track,
+.CodeMirror-hscrollbar::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 5px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb:hover,
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* 行号区域宽度调整 */
+.CodeMirror-lines {
+    padding: 4px 0;
+}
+
+/* 空编辑器提示 */
+.editor-empty-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-muted);
+    font-size: var(--font-size-lg);
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.editor-empty-hint .icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.5;
+}
+
+/* 编辑器快捷键提示 */
+.editor-shortcuts {
+    position: absolute;
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.editor-section:hover .editor-shortcuts {
+    opacity: 1;
+}
+
+.editor-shortcuts kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    line-height: 1;
+}
