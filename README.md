@@ -5,7 +5,7 @@
 
 一个功能强大、易于部署的在线HTML代码运行平台，让你可以在浏览器中实时编写和预览HTML、CSS和JavaScript代码。
 
-[在线演示](https://Yanmoshen.github.io/online-html-execution) | [文档](docs/) | [贡献指南](CONTRIBUTING.md)
+[在线演示](https://yanmoshen.github.io/Online-HTML-Execution/) | [文档](docs/) | [贡献指南](CONTRIBUTING.md)
 
 ## ✨ 特性
 
@@ -24,7 +24,7 @@
 
 ### 在线使用
 
-访问 [在线演示地址](https://Yanmoshen.github.io/online-html-execution) 立即开始使用。
+访问 [在线演示地址](https://yanmoshen.github.io/Online-HTML-Execution/) 立即开始使用。
 
 ### 本地运行
 
